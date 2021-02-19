@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="actions">
+        <item><date>2021-02-01</date><topic>胸部</topic></item>
+        <item><date>2021-02-02</date><topic>背部</topic></item>
+        <item><date>2021-02-03</date><topic>腿部</topic></item>
+        <item><date>2021-02-04</date><topic>有氧+体能</topic></item>
+        <item><date>2021-02-05</date><topic>肩部</topic></item>
+        <item><date>2021-02-06</date><topic>胸部</topic></item>
+        <item><date>2021-02-07</date><topic>腿部</topic></item>
+        <item><date>2021-02-08</date><topic>上胸</topic></item>
+        <item><date>2021-02-09</date><topic>背部</topic></item>
+        <item><date>2021-02-10</date><topic>体能</topic></item>
+    </string-array>
+</resources>
