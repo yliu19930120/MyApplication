@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                     .subscribe {
                         if (it.code == 0){
                             Global.loginUser = it.data
-                            val intent = Intent(this, ActionActivity::class.java)
+                            val intent = Intent(this, ActionListActivity::class.java)
                             startActivity(intent)
                         }else{
                             Utils.alert(this,"${it.message}")

@@ -1,13 +1,11 @@
 package req
 
-import android.app.AlertDialog
-import android.content.Intent
-import android.util.Log
-import com.google.gson.Gson
-import com.yliu.app.ActionActivity
+import com.yliu.myapplication.common.GsonConfig
+import com.yliu.myapplication.req.ReqInterceptor
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -17,11 +15,12 @@ object ReqUtils {
 
     val url = "http://106.52.133.51:10001"
 
-    val gson = Gson()
+    val client = OkHttpClient.Builder().addInterceptor(ReqInterceptor()).build()
 
     val retrofit = Retrofit.Builder().baseUrl(url)
-        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addConverterFactory(GsonConverterFactory.create(GsonConfig.gson))
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .client(client)
         .build()
 
     inline fun<reified S,T> get(reqFunc :S.()-> Call<Result<T>>):Result<T>{
@@ -49,6 +48,8 @@ object ReqUtils {
             .observeOn(AndroidSchedulers.mainThread())
 
     }
+
+
 
     fun <T> getBody(call :Call<T>):T{
 

@@ -13,7 +13,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="200dp"
-        android:text="@string/login_text"
+        android:text="@string/login_lable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/register_button"
         app:layout_constraintStart_toStartOf="parent" />
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="60dp"
-        android:text="@string/register_text"
+        android:text="@string/register_lable"
         app:layout_constraintBaseline_toBaselineOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/login_button" />
