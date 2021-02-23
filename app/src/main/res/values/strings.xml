@@ -11,5 +11,14 @@
     <string name="cancel_lable">取消</string>
     <string name="action_lable">动作界面</string>
     <string name="add_lable">加</string>
-    <string name="action_name_lable">动作</string>
+    <string name="action_name_lable">动作名称:</string>
+    <string name="traning_date_lable">训练日期:</string>
+    <string name="type_l1_lable">动作类别1:</string>
+    <string name="type_l2_lable">动作类别2:</string>
+    <string name="weight_lable">重量(kg):</string>
+    <string name="nums_lable">次数:</string>
+    <string name="group_times_lable">组间休息(秒):</string>
+    <string name="unilateral_lable">单/双边:</string>
+    <string name="speed_lable">速度(km/h):</string>
+    <string name="times_lable">持续时长(分钟):</string>
 </resources>
