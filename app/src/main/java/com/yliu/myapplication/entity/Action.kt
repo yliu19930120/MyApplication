@@ -3,7 +3,7 @@ package com.yliu.myapplication.entity
 import java.time.LocalDate
 
 class Action(
-    val id:String?,
+    val userId:String?,
     val actionName:String,
              val typeL1:String?,
              val typeL2:String?,

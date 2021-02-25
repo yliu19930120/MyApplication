@@ -1,10 +1,13 @@
 package com.yliu.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.CalendarView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.yliu.myapplication.ActionActivity
 import com.yliu.myapplication.ActionListAdapter
 import com.yliu.myapplication.common.Global
 import com.yliu.myapplication.common.Utils
@@ -12,7 +15,9 @@ import com.yliu.myapplication.req.ActionReq
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import req.ReqUtils
+import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 
 class ActionListActivity : AppCompatActivity() {
@@ -34,6 +39,13 @@ class ActionListActivity : AppCompatActivity() {
 
             buildActiosList(traningDate)
 
+        }
+
+        findViewById<Button>(R.id.add_button).setOnClickListener {
+            val intent = Intent(this, ActionActivity::class.java)
+            intent.putExtra("traningDate",
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(calendarView.date), ZoneId.systemDefault()).toLocalDate())
+            startActivity(intent)
         }
     }
 
