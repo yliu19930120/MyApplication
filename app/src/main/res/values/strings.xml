@@ -21,4 +21,8 @@
     <string name="unilateral_lable">单/双边:</string>
     <string name="speed_lable">速度(km/h):</string>
     <string name="times_lable">持续时长(分钟):</string>
+    <string name="single_text">单</string>
+    <string name="double_text">双</string>
+    <string name="delete_lable">删除</string>
+    <string name="edit_lable">编辑</string>
 </resources>

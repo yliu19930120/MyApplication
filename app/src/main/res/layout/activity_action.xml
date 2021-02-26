@@ -92,10 +92,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Switch"
+        android:textOff="@string/double_text"
+        android:textOn="@string/single_text"
         app:layout_constraintEnd_toEndOf="@+id/times_number"
         app:layout_constraintStart_toStartOf="@+id/times_number"
-        app:layout_constraintTop_toBottomOf="@+id/speed_number" />
+        app:layout_constraintTop_toBottomOf="@+id/speed_number"
+        tools:showText="true" />
 
     <Button
         android:id="@+id/sure_button"
@@ -213,8 +215,9 @@
         android:id="@+id/typel1_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/action_name_text"
-        tools:layout_editor_absoluteX="114dp" />
+        app:layout_constraintStart_toStartOf="@+id/action_name_text"
+        app:layout_constraintTop_toBottomOf="@+id/action_name_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

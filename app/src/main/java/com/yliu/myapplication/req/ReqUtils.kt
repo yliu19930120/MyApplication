@@ -23,45 +23,13 @@ object ReqUtils {
         .client(client)
         .build()
 
-    inline fun<reified S,T> get(reqFunc :S.()-> Call<Result<T>>):Result<T>{
-        val create = retrofit.create(S::class.java)
-
-        val call = create.reqFunc()
-
-        return getBody(call)
-    }
-
-    inline fun<reified S,P,T> post(p:P, reqFunc:S.(p :P)-> Call<Result<T>>):Result<T>{
-        val create = retrofit.create(S::class.java)
-
-        val call = create.reqFunc(p)
-
-        return getBody(call)
-    }
-
-
-    inline fun<reified S,P,T> postSync(p:P, reqFunc:S.(p :P)-> Observable<Result<T>>): Observable<Result<T>>{
+    inline fun<reified S,P,T> executeSync(p:P, reqFunc:S.(p :P)-> Observable<Result<T>>): Observable<Result<T>>{
         val create = retrofit.create(S::class.java)
 
         return create.reqFunc(p)
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
 
-    }
-
-
-
-    fun <T> getBody(call :Call<T>):T{
-
-        val execute = call.execute()
-
-        val body = try {
-            val body = execute.body()
-            return body!!
-        } catch (e: Exception) {
-            throw Exception()
-        }
-        return body!!
     }
 
 }

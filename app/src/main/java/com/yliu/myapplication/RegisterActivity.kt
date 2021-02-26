@@ -39,7 +39,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val user = User(name,password,username,phone)
         try {
-            ReqUtils.postSync(user,UserReq::reqgister).subscribe {
+            ReqUtils.executeSync(user,UserReq::reqgister).subscribe {
                 if (it.code == 0){
                     Global.loginUser = it.data
                     val intent = Intent(this, ActionListActivity::class.java)

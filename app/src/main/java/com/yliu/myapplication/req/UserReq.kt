@@ -12,4 +12,7 @@ interface UserReq {
     @POST("/yliu/user/login")
     fun login(@Body user: User): Observable<Result<User>>
 
+    @POST("/yliu/user/valid")
+    fun valid(@Body user:User): Observable<Result<User>>
+
 }
