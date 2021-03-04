@@ -17,6 +17,9 @@ interface ActionReq {
     @POST("/yliu/action/save")
     fun addAction(@Body action: Action):Observable<Result<String>>
 
+    @POST("/yliu/action/update")
+    fun updateAction(@Body action: Action):Observable<Result<String>>
+
     @GET("/yliu/action/delete")
     fun deleteAction(@Query("userId") userId:String,@Query("actionIds")vararg actionIds:String):Observable<Result<String>>
 }

@@ -35,4 +35,8 @@ object GsonConfig {
             .registerTypeAdapter(LocalDateTime::class.java,dateTimeSerializable)
             .setDateFormat("yyyy-MM-dd")
             .create()
+
+    fun<T> toJson(t:T?) = if (t==null) null else gson.toJson(t)
+
+    inline fun<reified T> fromJson(json:String?) = if (json == null) null else gson.fromJson(json,T::class.java)
 }

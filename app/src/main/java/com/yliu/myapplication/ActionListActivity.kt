@@ -20,6 +20,8 @@ import io.reactivex.schedulers.Schedulers
 import req.ReqUtils
 import java.time.LocalDate
 import java.time.ZoneId
+import req.Result
+
 
 class ActionListActivity : AppCompatActivity() {
 
@@ -44,7 +46,8 @@ class ActionListActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.add_button).setOnClickListener {
             val intent = Intent(this, ActionActivity::class.java)
-            intent.putExtra("traningDate",calendarView.date)
+            intent.putExtra("action",GsonConfig.toJson(Action(DateUtils.toLocalDate(calendarView.date))))
+            intent.putExtra("op","add")
             startActivityForResult(intent,ResCode.succ)
         }
 
@@ -70,7 +73,6 @@ class ActionListActivity : AppCompatActivity() {
             if (it.code == 0){
                 val actionAdapter = ActionListAdapter(this, R.layout.action_list, it.data)
                 val listView = findViewById<ListView>(R.id.actions)
-                Log.e(tag,"查询到记录数 ${it.data.size}")
                 listView.adapter = actionAdapter
             }else{
                 Utils.alert(this,"${it.message}")
@@ -87,7 +89,8 @@ class ActionListActivity : AppCompatActivity() {
                 val action = parent!!.getItemAtPosition(position) as Action
 
                 AlertDialog.Builder(this@ActionListActivity)
-                        .setPositiveButton("编辑") { dialog, which -> updateAction(action.id!!) }
+                        .setPositiveButton("编辑") { dialog, which -> updateAction(action!!) }
+                        .setNeutralButton("复制"){dialog, which -> copy(action!!)}
                         .setNegativeButton("删除") { dialog, which -> deleteAction(action.id!!) }
                         .create()
                         .show()
@@ -102,18 +105,32 @@ class ActionListActivity : AppCompatActivity() {
                 .deleteAction(Global.loginUser!!.id!!,actionId)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (it.code == 0){
-                        val calendarView = findViewById<CalendarView>(R.id.calendarView)
-                        buildActiosList(DateUtils.toLocalDate(calendarView.date))
-                    }else{
-                        Utils.alert(this,"${it.message}")
-                    }
-                }
+                .subscribe (this::refreshList)
 
     }
 
-    fun updateAction(actionId: String){
-        Log.i(tag,"更新 ${actionId}")
+    fun updateAction(action: Action){
+        Log.i(tag,"更新 ${action.actionName}")
+        val intent = Intent(this, ActionActivity::class.java)
+        intent.putExtra("op","update")
+        intent.putExtra("action",GsonConfig.gson.toJson(action))
+        startActivityForResult(intent,ResCode.succ)
+
+    }
+
+    fun copy(action: Action){
+        Log.i(tag,"复制动作 ${action.actionName}")
+        val newAction = Action(action)
+        ReqUtils.executeSync(newAction,ActionReq::addAction).subscribe (this::refreshList)
+        buildActiosList(action.traningDate)
+    }
+
+    fun refreshList(it:Result<String>){
+        if (it.code == 0){
+            val calendarView = findViewById<CalendarView>(R.id.calendarView)
+            buildActiosList(DateUtils.toLocalDate(calendarView.date))
+        }else{
+            Utils.alert(this,"${it.message}")
+        }
     }
 }
