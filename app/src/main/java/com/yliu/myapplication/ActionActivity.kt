@@ -34,7 +34,7 @@ class ActionActivity() : AppCompatActivity() {
 
         val typel1TextView = findViewById<TextView>(R.id.typel1_text)
 
-        val actionTypel1s = listOf("胸部","背部","肩部","腿部","手臂","腹部","体能","有氧","核心肌群","其他")
+        val actionTypel1s = Cost.ACTION_TYPES
 
         typeL1Spinner.adapter = ArrayAdapter<String>(this, R.layout.action_typel1s,actionTypel1s)
 
@@ -87,7 +87,6 @@ class ActionActivity() : AppCompatActivity() {
         val groupNB = findViewById<EditText>(R.id.group_times_number)
         val timsNB = findViewById<EditText>(R.id.times_number)
         val unilateralSW = findViewById<Switch>(R.id.unilateral_switch)
-
         return Action(action?.id,Global.loginUser!!.id!!,
                 actionNameTV.text.toString(),
                 typel1TextView.text.toString(),
@@ -95,7 +94,7 @@ class ActionActivity() : AppCompatActivity() {
                 weightNB.text.toString().toDoubleOrNull(),
                 numsTV.text.toString().toIntOrNull(),
                 groupNB.text.toString().toIntOrNull(),
-                if ("单".equals(unilateralSW.text.toString())) "1" else "0",
+                if (unilateralSW.isChecked) "1" else "0",
                 LocalDate.parse(traningDateTV.text,DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 speedNB.text.toString().toDoubleOrNull(),
                 timsNB.text.toString().toDoubleOrNull())
@@ -111,6 +110,6 @@ class ActionActivity() : AppCompatActivity() {
         findViewById<EditText>(R.id.weight_number).setText(action.weight?.toString())
         findViewById<EditText>(R.id.group_times_number).setText(action.groupsTimes?.toString())
         findViewById<EditText>(R.id.times_number).setText(action.times?.toString())
-        findViewById<Switch>(R.id.unilateral_switch).setText(action.unilateral)
+        findViewById<Switch>(R.id.unilateral_switch).isChecked = ("1".equals(action.unilateral))
     }
 }

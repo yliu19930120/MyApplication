@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.yliu.app.R
+import com.yliu.myapplication.common.Cost
 import com.yliu.myapplication.entity.Action
 import com.yliu.myapplication.entity.ActionTp
 
@@ -23,11 +24,25 @@ class ActionListAdapter(context: Context, resource: Int, objects: List<Action>) 
         val weight = view.findViewById<TextView>(R.id.weight)
         val nums = view.findViewById<TextView>(R.id.nums)
         val actionId = view.findViewById<TextView>(R.id.action_id)
+        val typel1 = action!!.typeL1
+        val times = view.findViewById<TextView>(R.id.times)
+        val speed = view.findViewById<TextView>(R.id.speed)
 
         actionId.setText(action!!.id)
         actionName.setText(action!!.actionName)
         weight.setText("${action!!.weight} kg")
         nums.setText("${action!!.nums} 次")
+        times.setText("${action!!.times} 分钟")
+        speed.setText("${action!!.speed} km/h")
+
+        if ( typel1 in Cost.AEROBIC_TYPES){
+            weight.visibility = View.GONE
+            nums.visibility = View.GONE
+        }else{
+            times.visibility = View.GONE
+            speed.visibility = View.GONE
+        }
+
         return view
     }
 
