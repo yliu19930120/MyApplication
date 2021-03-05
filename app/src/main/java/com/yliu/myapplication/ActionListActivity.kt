@@ -10,6 +10,9 @@ import android.widget.Button
 import android.widget.CalendarView
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.CalendarMode
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.yliu.myapplication.ActionActivity
 import com.yliu.myapplication.ActionListAdapter
 import com.yliu.myapplication.common.*
@@ -21,6 +24,7 @@ import req.ReqUtils
 import java.time.LocalDate
 import java.time.ZoneId
 import req.Result
+import java.util.*
 
 
 class ActionListActivity : AppCompatActivity() {
@@ -30,23 +34,29 @@ class ActionListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_action)
-        val calendarView = findViewById<CalendarView>(R.id.calendarView)
-        val traningDate = LocalDate.now()
-        calendarView.date = traningDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val calendarView = findViewById<MaterialCalendarView>(R.id.calendarView)
+
+        calendarView.state().edit()
+            .setFirstDayOfWeek(Calendar.MONDAY)
+            .setMaximumDate(CalendarDay.today())
+            .setCalendarDisplayMode(CalendarMode.MONTHS)
+            .commit();
+
+        calendarView.selectedDate = CalendarDay.today()
+
+        val traningDate = DateUtils.toLocalDate(calendarView.selectedDate.getDate().time)
+
         buildActiosList(traningDate)
 
+        calendarView.setOnDateChangedListener{ widget, date, selected ->
 
-        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-
-            val traningDate = LocalDate.of(year, month+1, dayOfMonth)
-            calendarView.date = DateUtils.toLong(traningDate)
+            val traningDate = DateUtils.toLocalDate(date.getDate().time)
             buildActiosList(traningDate)
-
         }
 
         findViewById<Button>(R.id.add_button).setOnClickListener {
             val intent = Intent(this, ActionActivity::class.java)
-            intent.putExtra("action",GsonConfig.toJson(Action(DateUtils.toLocalDate(calendarView.date))))
+            intent.putExtra("action",GsonConfig.toJson(Action(DateUtils.toLocalDate(calendarView.selectedDate.date.time))))
             intent.putExtra("op","add")
             startActivityForResult(intent,ResCode.succ)
         }
