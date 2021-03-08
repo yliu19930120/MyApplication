@@ -23,12 +23,10 @@ class ActionListAdapter(context: Context, resource: Int, objects: List<Action>) 
         val actionName = view.findViewById<TextView>(R.id.actionName)
         val weight = view.findViewById<TextView>(R.id.weight)
         val nums = view.findViewById<TextView>(R.id.nums)
-        val actionId = view.findViewById<TextView>(R.id.action_id)
         val typel1 = action!!.typeL1
         val times = view.findViewById<TextView>(R.id.times)
         val speed = view.findViewById<TextView>(R.id.speed)
 
-        actionId.setText(action!!.id)
         actionName.setText(action!!.actionName)
         weight.setText("${action!!.weight} kg")
         nums.setText("${action!!.nums} 次")

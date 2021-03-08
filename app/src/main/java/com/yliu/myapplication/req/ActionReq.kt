@@ -22,4 +22,7 @@ interface ActionReq {
 
     @GET("/yliu/action/delete")
     fun deleteAction(@Query("userId") userId:String,@Query("actionIds")vararg actionIds:String):Observable<Result<String>>
+
+    @GET("/yliu/action/dates")
+    fun actionDates(@Query("userId") userId: String):Observable<Result<List<LocalDate>>>
 }

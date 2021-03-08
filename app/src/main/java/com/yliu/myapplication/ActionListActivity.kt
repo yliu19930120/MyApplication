@@ -2,18 +2,18 @@ package com.yliu.app
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Button
-import android.widget.CalendarView
-import android.widget.ListView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.yliu.myapplication.ActionActivity
+import com.yliu.myapplication.ActionDayViewDecorator
 import com.yliu.myapplication.ActionListAdapter
 import com.yliu.myapplication.common.*
 import com.yliu.myapplication.entity.Action
@@ -25,6 +25,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import req.Result
 import java.util.*
+import java.util.stream.Collectors
 
 
 class ActionListActivity : AppCompatActivity() {
@@ -34,6 +35,7 @@ class ActionListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_action)
+
         val calendarView = findViewById<MaterialCalendarView>(R.id.calendarView)
 
         calendarView.state().edit()
@@ -43,6 +45,13 @@ class ActionListActivity : AppCompatActivity() {
             .commit();
 
         calendarView.selectedDate = CalendarDay.today()
+
+        ReqUtils.executeSync(Global.loginUser!!.id!!,ActionReq::actionDates)
+                .subscribe {
+                    calendarView.addDecorator(ActionDayViewDecorator(Color.BLUE, it.data.stream().collect(Collectors.toSet())))
+                }
+
+
 
         val traningDate = DateUtils.toLocalDate(calendarView.selectedDate.getDate().time)
 
