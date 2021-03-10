@@ -2,8 +2,10 @@ package com.yliu.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
+import com.yliu.app.ActionListActivity
 import com.yliu.app.R
 import com.yliu.myapplication.common.*
 import com.yliu.myapplication.entity.Action
@@ -17,26 +19,19 @@ import java.time.format.DateTimeFormatter
 class ActionActivity() : AppCompatActivity() {
 
     var action:Action? = null
+    val tag = ActionActivity::class.java.name
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_action)
 
-        val actionStr = intent.getStringExtra("action")
-        action = GsonConfig.fromJson(actionStr)
-
-        fillForm(action!!)
-
-        val traningDate = action?.traningDate
-        val op = intent.getStringExtra("op")
-
         val typeL1Spinner = findViewById<Spinner>(R.id.type_l1_spinner)
-
-        val typel1TextView = findViewById<TextView>(R.id.typel1_text)
 
         val actionTypel1s = Cost.ACTION_TYPES
 
         typeL1Spinner.adapter = ArrayAdapter<String>(this, R.layout.action_typel1s,actionTypel1s)
+
+        val typel1TextView = findViewById<TextView>(R.id.typel1_text)
 
         typeL1Spinner.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position:        Int, id: Long) {
@@ -47,7 +42,11 @@ class ActionActivity() : AppCompatActivity() {
             }
         }
 
+        val actionStr = intent.getStringExtra("action")
+        action = GsonConfig.fromJson(actionStr)
 
+        val traningDate = action?.traningDate
+        val op = intent.getStringExtra("op")
 
         findViewById<Button>(R.id.sure_button).setOnClickListener { if ("update".equals(op)) submit(ActionReq::updateAction) else submit(ActionReq::addAction)}
 
@@ -56,7 +55,7 @@ class ActionActivity() : AppCompatActivity() {
             finish()
         }
 
-
+        fillForm(action!!)
     }
 
     fun submit( reqFunc:ActionReq.(p :Action)-> Observable<Result<String>>){
@@ -104,6 +103,9 @@ class ActionActivity() : AppCompatActivity() {
     fun fillForm(action:Action){
         findViewById<EditText>(R.id.date_text).setText(DateUtils.format(action.traningDate))
         findViewById<TextView>(R.id.typel1_text).setText(action.typeL1)
+        if (action.typeL1!=null){
+            findViewById<Spinner>(R.id.type_l1_spinner).setSelection(Cost.ACTION_TYPES.indexOf(action.typeL1))
+        }
         findViewById<EditText>(R.id.action_name_text).setText(action.actionName)
         findViewById<EditText>(R.id.nums_number).setText(action.nums?.toString())
         findViewById<EditText>(R.id.speed_number).setText(action.speed?.toString())

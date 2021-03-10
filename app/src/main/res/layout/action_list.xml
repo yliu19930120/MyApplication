@@ -8,28 +8,28 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:gravity="center|left" />
+        android:gravity="center|fill_horizontal" />
 
     <TextView
         android:id="@+id/weight"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:gravity="center|left"/>
+        android:gravity="center|fill_horizontal"/>
 
     <TextView
         android:id="@+id/nums"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:gravity="center|left"/>
+        android:gravity="center|fill_horizontal"/>
 
     <TextView
         android:id="@+id/times"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:gravity="center|left"
+        android:gravity="center|fill_horizontal"
         android:visibility="gone"/>
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:gravity="center|left"
+        android:gravity="center|fill_horizontal"
         android:visibility="gone"/>
 
 </LinearLayout>

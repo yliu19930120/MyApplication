@@ -108,13 +108,20 @@ class ActionListActivity : AppCompatActivity() {
                 val action = parent!!.getItemAtPosition(position) as Action
 
                 AlertDialog.Builder(this@ActionListActivity)
-                        .setPositiveButton("编辑") { dialog, which -> updateAction(action!!) }
-                        .setNeutralButton("复制"){dialog, which -> copy(action!!)}
-                        .setNegativeButton("删除") { dialog, which -> deleteAction(action.id!!) }
+                        .setNeutralButton("删除"){dialog, which -> deleteAction(action.id!!)}
+                        .setNegativeButton("复制") { dialog, which -> copy(action!!) }
                         .create()
                         .show()
-                return false
+                return true
             }
+        }
+
+        listView.onItemClickListener = object:AdapterView.OnItemClickListener{
+            override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val action = parent!!.getItemAtPosition(position) as Action
+                updateAction(action!!)
+            }
+
         }
     }
 
