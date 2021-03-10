@@ -153,8 +153,8 @@ class ActionListActivity : AppCompatActivity() {
 
     fun refreshList(it:Result<String>){
         if (it.code == 0){
-            val calendarView = findViewById<CalendarView>(R.id.calendarView)
-            buildActiosList(DateUtils.toLocalDate(calendarView.date))
+            val calendarView = findViewById<MaterialCalendarView>(R.id.calendarView)
+            buildActiosList(DateUtils.toLocalDate(calendarView.selectedDate.getDate().time))
         }else{
             Utils.alert(this,"${it.message}")
         }
