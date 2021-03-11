@@ -1,5 +1,6 @@
 package com.yliu.app
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -31,6 +32,7 @@ import java.util.stream.Collectors
 class ActionListActivity : AppCompatActivity() {
 
     val tag = ActionListActivity::class.java.name
+    val loginUserKey = "loginUser"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,5 +160,13 @@ class ActionListActivity : AppCompatActivity() {
         }else{
             Utils.alert(this,"${it.message}")
         }
+    }
+
+    override fun onStop() {
+        getPreferences(Activity.MODE_PRIVATE)?.
+        edit()?.
+        putString(loginUserKey, GsonConfig.gson.toJson(Global.loginUser))?.
+        commit()
+        super.onStop()
     }
 }

@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
         val userJson = getPreferences(Activity.MODE_PRIVATE)?.getString(loginUserKey,null)
         if(userJson!=null){
             val user = GsonConfig.gson.fromJson(userJson,User::class.java)
@@ -38,6 +39,17 @@ class MainActivity : AppCompatActivity() {
                         finish()
                     }
                 }
+        }else {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
+    }
+
+    override fun onStop() {
+        getPreferences(Activity.MODE_PRIVATE)?.
+        edit()?.
+        putString(loginUserKey, GsonConfig.gson.toJson(Global.loginUser))?.
+        commit()
+        super.onStop()
     }
 }
