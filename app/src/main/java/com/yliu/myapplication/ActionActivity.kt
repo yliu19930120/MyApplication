@@ -2,10 +2,8 @@ package com.yliu.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
-import com.yliu.app.ActionListActivity
 import com.yliu.app.R
 import com.yliu.myapplication.common.*
 import com.yliu.myapplication.entity.Action
@@ -20,7 +18,7 @@ class ActionActivity() : AppCompatActivity() {
 
     var action:Action? = null
     val tag = ActionActivity::class.java.name
-
+    val loginUserKey = "loginUser"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_action)

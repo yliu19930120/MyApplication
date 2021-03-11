@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YliuApplication">
-        <activity android:name="com.yliu.myapplication.ActionActivity"></activity>
+        <activity android:name="com.yliu.myapplication.LoginActivity"></activity>
+        <activity android:name="com.yliu.myapplication.ActionActivity" />
         <activity android:name=".ActionListActivity" />
         <activity
             android:name=".RegisterActivity"

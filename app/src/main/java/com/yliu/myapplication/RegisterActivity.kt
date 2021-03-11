@@ -44,6 +44,7 @@ class RegisterActivity : AppCompatActivity() {
                     Global.loginUser = it.data
                     val intent = Intent(this, ActionListActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }else{
                     Utils.alert(this,"${it.message}")
                 }
