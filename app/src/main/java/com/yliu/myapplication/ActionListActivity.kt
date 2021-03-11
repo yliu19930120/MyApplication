@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -23,7 +24,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import req.ReqUtils
 import java.time.LocalDate
-import java.time.ZoneId
 import req.Result
 import java.util.*
 import java.util.stream.Collectors
@@ -32,7 +32,6 @@ import java.util.stream.Collectors
 class ActionListActivity : AppCompatActivity() {
 
     val tag = ActionListActivity::class.java.name
-    val loginUserKey = "loginUser"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,8 +109,8 @@ class ActionListActivity : AppCompatActivity() {
                 val action = parent!!.getItemAtPosition(position) as Action
 
                 AlertDialog.Builder(this@ActionListActivity)
-                        .setNeutralButton("删除"){dialog, which -> deleteAction(action.id!!)}
-                        .setNegativeButton("复制") { dialog, which -> copy(action!!) }
+                        .setNeutralButton("删除"){ dialog, _ -> deleteAction(action.id!!)}
+                        .setNegativeButton("复制") { dialog, _ -> copy(action!!) }
                         .create()
                         .show()
                 return true
@@ -163,10 +162,7 @@ class ActionListActivity : AppCompatActivity() {
     }
 
     override fun onStop() {
-        getPreferences(Activity.MODE_PRIVATE)?.
-        edit()?.
-        putString(loginUserKey, GsonConfig.gson.toJson(Global.loginUser))?.
-        commit()
+        Global.commitUser(this)
         super.onStop()
     }
 }
