@@ -36,6 +36,8 @@ class ActionListAdapter(context: Context, resource: Int, objects: List<Action>) 
         if ( typel1 in Cost.AEROBIC_TYPES){
             weight.visibility = View.GONE
             nums.visibility = View.GONE
+            times.visibility = View.VISIBLE
+            speed.visibility = View.VISIBLE
         }else{
             times.visibility = View.GONE
             speed.visibility = View.GONE

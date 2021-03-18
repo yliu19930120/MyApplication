@@ -1,6 +1,5 @@
 package com.yliu.myapplication
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -8,13 +7,14 @@ import com.yliu.app.R
 import com.yliu.myapplication.common.*
 import com.yliu.myapplication.entity.Action
 import com.yliu.myapplication.req.ActionReq
+import com.yliu.myapplication.req.BaseObserver
 import io.reactivex.Observable
 import req.ReqUtils
 import req.Result
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ActionActivity() : AppCompatActivity() {
+class ActionActivity() : BaseActivity() {
 
     var action:Action? = null
     val tag = ActionActivity::class.java.name
@@ -62,16 +62,13 @@ class ActionActivity() : AppCompatActivity() {
 
         val action = getForm()
 
-        ReqUtils.executeSync(action, reqFunc).subscribe {
-            if (it.code == 0){
-                val bundle = Bundle()
-                bundle.putLong("traningDate",DateUtils.toLong(action.traningDate))
-                setResult(ResCode.succ,intent.putExtras(bundle))
-                finish()
-            }else{
-                Utils.alert(this,"${it.message}")
-            }
-        }
+        ReqUtils.executeSync(action, reqFunc).subscribe(BaseObserver{
+            val bundle = Bundle()
+            bundle.putLong("traningDate",DateUtils.toLong(action.traningDate))
+            setResult(ResCode.succ,intent.putExtras(bundle))
+            finish()
+        })
+
     }
 
     fun getForm():Action{

@@ -1,5 +1,6 @@
 package com.yliu.myapplication
 
+import com.yliu.myapplication.common.Cost
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -10,8 +11,11 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val typeL1 = "有氧"
+
+        println(typeL1 in Cost.AEROBIC_TYPES)
     }
 }

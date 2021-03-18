@@ -14,10 +14,11 @@ import com.yliu.app.R
 import com.yliu.app.RegisterActivity
 import com.yliu.myapplication.common.Global
 import com.yliu.myapplication.common.Utils
+import com.yliu.myapplication.req.BaseObserver
 import req.ReqUtils
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     var tag = MainActivity::class.java.name
 
@@ -36,25 +37,14 @@ class LoginActivity : AppCompatActivity() {
 
             val username = findViewById<EditText>(R.id.username_text).text.toString().trim()
             val password = findViewById<EditText>(R.id.password_text).text.toString().trim()
-            try {
-                val user = User(username,password)
-
-                ReqUtils.executeSync(user,UserReq::login)
-                    .subscribe {
-                        if (it.code == 0){
-                            Global.loginUser = it.data
-                            val intent = Intent(this, ActionListActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }else{
-                            Utils.alert(this,"${it.message}")
-                        }
-                    }
-
-            } catch (e: Exception) {
-                Log.e(tag,"异常",e)
-                Utils.alert(this,e.message)
-            }
+            val user = User(username, password)
+            ReqUtils.executeSync(user, UserReq::login)
+                    .subscribe(BaseObserver {
+                        Global.loginUser = it.data
+                        val intent = Intent(this, ActionListActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    })
 
         }
     }

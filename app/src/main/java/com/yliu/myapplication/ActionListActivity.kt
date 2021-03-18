@@ -17,9 +17,11 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.yliu.myapplication.ActionActivity
 import com.yliu.myapplication.ActionDayViewDecorator
 import com.yliu.myapplication.ActionListAdapter
+import com.yliu.myapplication.BaseActivity
 import com.yliu.myapplication.common.*
 import com.yliu.myapplication.entity.Action
 import com.yliu.myapplication.req.ActionReq
+import com.yliu.myapplication.req.BaseObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import req.ReqUtils
@@ -29,7 +31,7 @@ import java.util.*
 import java.util.stream.Collectors
 
 
-class ActionListActivity : AppCompatActivity() {
+class ActionListActivity : BaseActivity() {
 
     val tag = ActionListActivity::class.java.name
 
@@ -48,9 +50,9 @@ class ActionListActivity : AppCompatActivity() {
         calendarView.selectedDate = CalendarDay.today()
 
         ReqUtils.executeSync(Global.loginUser!!.id!!,ActionReq::actionDates)
-                .subscribe {
+                .subscribe(BaseObserver{
                     calendarView.addDecorator(ActionDayViewDecorator(Color.BLUE, it.data.stream().collect(Collectors.toSet())))
-                }
+                })
 
 
 
@@ -86,18 +88,13 @@ class ActionListActivity : AppCompatActivity() {
     fun buildActiosList(traningDate :LocalDate){
         val userId = Global.loginUser!!.id!!
 
-        ReqUtils.retrofit.create(ActionReq::class.java).getActions(userId,traningDate)
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-            if (it.code == 0){
+        ReqUtils.getReq(ActionReq::class.java).getActions(userId,traningDate)
+            .compose(ReqUtils.schedules())
+            .subscribe(BaseObserver{
                 val actionAdapter = ActionListAdapter(this, R.layout.action_list, it.data)
                 val listView = findViewById<ListView>(R.id.actions)
                 listView.adapter = actionAdapter
-            }else{
-                Utils.alert(this,"${it.message}")
-            }
-        }
+            })
 
     }
 
@@ -128,11 +125,10 @@ class ActionListActivity : AppCompatActivity() {
 
     fun deleteAction(actionId:String){
 
-        ReqUtils.retrofit.create(ActionReq::class.java)
+        ReqUtils.getReq(ActionReq::class.java)
                 .deleteAction(Global.loginUser!!.id!!,actionId)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (this::refreshList)
+                .compose(ReqUtils.schedules())
+                .subscribe (BaseObserver{this::refreshList})
 
     }
 
@@ -152,13 +148,9 @@ class ActionListActivity : AppCompatActivity() {
         buildActiosList(action.traningDate)
     }
 
-    fun refreshList(it:Result<String>){
-        if (it.code == 0){
-            val calendarView = findViewById<MaterialCalendarView>(R.id.calendarView)
-            buildActiosList(DateUtils.toLocalDate(calendarView.selectedDate.getDate().time))
-        }else{
-            Utils.alert(this,"${it.message}")
-        }
+    fun refreshList(it: Result<String>) {
+        val calendarView = findViewById<MaterialCalendarView>(R.id.calendarView)
+        buildActiosList(DateUtils.toLocalDate(calendarView.selectedDate.getDate().time))
     }
 
     override fun onStop() {
