@@ -68,7 +68,7 @@ class ActionListActivity : BaseActivity() {
 
         findViewById<Button>(R.id.add_button).setOnClickListener {
             val intent = Intent(this, ActionActivity::class.java)
-            intent.putExtra("action",GsonConfig.toJson(Action(DateUtils.toLocalDate(calendarView.selectedDate.date.time))))
+            intent.putExtra("action",GsonConfig.toJson(Action(DateUtils.toLocalDate(calendarView.selectedDate.date.time)!!)))
             intent.putExtra("op","add")
             startActivityForResult(intent,ResCode.succ)
         }
@@ -81,14 +81,15 @@ class ActionListActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ResCode.succ){
             val get = data?.extras?.getLong("traningDate")
-            buildActiosList(DateUtils.toLocalDate(get!!))
+            buildActiosList(DateUtils.toLocalDate(get))
         }
     }
 
-    fun buildActiosList(traningDate :LocalDate){
+    fun buildActiosList(traningDate :LocalDate?){
         val userId = Global.loginUser!!.id!!
+        val calendarView = findViewById<MaterialCalendarView>(R.id.calendarView)
 
-        ReqUtils.getReq(ActionReq::class.java).getActions(userId,traningDate)
+        ReqUtils.getReq(ActionReq::class.java).getActions(userId,traningDate?: DateUtils.toLocalDate(calendarView.selectedDate.date.time)!!)
             .compose(ReqUtils.schedules())
             .subscribe(BaseObserver{
                 val actionAdapter = ActionListAdapter(this, R.layout.action_list, it.data)

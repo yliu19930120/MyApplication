@@ -11,13 +11,13 @@ object DateUtils {
 
     fun format(date: LocalDate) = date.format(DateTimeFormatter.ofPattern(GsonConfig.dateFormat))
 
-    fun format(l: Long) = toLocalDate(l).format(DateTimeFormatter.ofPattern(GsonConfig.dateFormat))
+    fun format(l: Long) = toLocalDate(l)?.format(DateTimeFormatter.ofPattern(GsonConfig.dateFormat))
 
     fun toLong(date: LocalDate) = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
     fun toLong(str: String) = toLong(parse(str))
 
-    fun toLocalDate(l :Long)  = Instant.ofEpochMilli(l).atZone(ZoneId.systemDefault()).toLocalDate()
+    fun toLocalDate(l :Long?)  = if (l==null) null else Instant.ofEpochMilli(l).atZone(ZoneId.systemDefault()).toLocalDate()
 
 
 }

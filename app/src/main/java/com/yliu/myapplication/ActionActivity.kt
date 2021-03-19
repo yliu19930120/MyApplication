@@ -48,11 +48,6 @@ class ActionActivity() : BaseActivity() {
 
         findViewById<Button>(R.id.sure_button).setOnClickListener { if ("update".equals(op)) submit(ActionReq::updateAction) else submit(ActionReq::addAction)}
 
-        findViewById<Button>(R.id.cancel_button).setOnClickListener{
-            setResult(ResCode.succ,intent.putExtra("traningDate",DateUtils.toLong(traningDate!!)))
-            finish()
-        }
-
         fillForm(action!!)
     }
 

@@ -104,23 +104,11 @@
         android:id="@+id/sure_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginBottom="96dp"
         android:text="@string/sure_lable"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cancel_button"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/cancel_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:text="@string/cancel_lable"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sure_button" />
 
     <TextView
         android:id="@+id/traning_date_tv"

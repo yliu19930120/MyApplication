@@ -23,10 +23,6 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        findViewById<Button>(R.id.cancel_button).setOnClickListener {
-            this.finish()
-        }
-
         findViewById<Button>(R.id.sure_button).setOnClickListener {
             register()
         }
