@@ -38,7 +38,7 @@ class BaseObserver<T>(val action:(p:Result<T>)->Unit,val errorFunc:(p:Result<T>)
     override fun onError(e: Throwable) {
         loadingDialog?.dismiss()
         Log.e(TAG,"异常:${e.message}")
-        Utils.alert("网络请求异常 ${e.message}")
+        Utils.alert("异常 ${e.message}")
     }
 
 }

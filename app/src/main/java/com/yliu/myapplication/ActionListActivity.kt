@@ -1,39 +1,42 @@
 package com.yliu.app
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.View
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.AdapterView
+import android.widget.Button
+import android.widget.ListView
+import android.widget.TextView
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
-import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.yliu.myapplication.ActionActivity
 import com.yliu.myapplication.ActionDayViewDecorator
 import com.yliu.myapplication.ActionListAdapter
 import com.yliu.myapplication.BaseActivity
-import com.yliu.myapplication.common.*
+import com.yliu.myapplication.common.DateUtils
+import com.yliu.myapplication.common.Global
+import com.yliu.myapplication.common.GsonConfig
+import com.yliu.myapplication.common.ResCode
 import com.yliu.myapplication.entity.Action
 import com.yliu.myapplication.req.ActionReq
 import com.yliu.myapplication.req.BaseObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import req.ReqUtils
-import java.time.LocalDate
 import req.Result
+import java.time.LocalDate
 import java.util.*
 import java.util.stream.Collectors
+import kotlin.collections.HashSet
+import kotlin.collections.LinkedHashSet
 
 
 class ActionListActivity : BaseActivity() {
 
-    val tag = ActionListActivity::class.java.name
+    val TAG = ActionListActivity::class.java.name
+    var dates:LinkedHashSet<LocalDate> = LinkedHashSet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +52,13 @@ class ActionListActivity : BaseActivity() {
 
         calendarView.selectedDate = CalendarDay.today()
 
-        ReqUtils.executeSync(Global.loginUser!!.id!!,ActionReq::actionDates)
-                .subscribe(BaseObserver{
-                    calendarView.addDecorator(ActionDayViewDecorator(Color.BLUE, it.data.stream().collect(Collectors.toSet())))
-                })
 
+        ReqUtils.executeSync(Global.loginUser!!.id!!,ActionReq::actionDates).subscribe(
+            BaseObserver {
+                dates = LinkedHashSet(it.data)
+                calendarView.addDecorator(ActionDayViewDecorator(Color.BLUE, dates))
+            }
+        )
 
 
         val traningDate = DateUtils.toLocalDate(calendarView.selectedDate.getDate().time)
@@ -134,7 +139,7 @@ class ActionListActivity : BaseActivity() {
     }
 
     fun updateAction(action: Action){
-        Log.i(tag,"更新 ${action.actionName}")
+        Log.i(TAG,"更新 ${action.actionName}")
         val intent = Intent(this, ActionActivity::class.java)
         intent.putExtra("op","update")
         intent.putExtra("action",GsonConfig.gson.toJson(action))
@@ -143,7 +148,7 @@ class ActionListActivity : BaseActivity() {
     }
 
     fun copy(action: Action){
-        Log.i(tag,"复制动作 ${action.actionName}")
+        Log.i(TAG,"复制动作 ${action.actionName}")
         val newAction = Action(action)
         ReqUtils.executeSync(newAction,ActionReq::addAction).subscribe (this::refreshList)
         buildActiosList(action.traningDate)

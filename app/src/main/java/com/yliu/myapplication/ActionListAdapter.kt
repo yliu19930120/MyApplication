@@ -38,7 +38,9 @@ class ActionListAdapter(context: Context, resource: Int, objects: List<Action>) 
             nums.visibility = View.GONE
             times.visibility = View.VISIBLE
             speed.visibility = View.VISIBLE
-        }else{
+        }else if( typel1 in Cost.OTHER_TYPES){
+            times.visibility = View.VISIBLE
+        }else {
             times.visibility = View.GONE
             speed.visibility = View.GONE
         }
